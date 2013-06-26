@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0435EF18177B4D6700CB0B14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435EF17177B4D6700CB0B14 /* UIKit.framework */; };
+		0435EF1A177B4D6700CB0B14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435EF19177B4D6700CB0B14 /* Foundation.framework */; };
+		0435EF1C177B4D6700CB0B14 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435EF1B177B4D6700CB0B14 /* CoreGraphics.framework */; };
+		0435EF22177B4D6700CB0B14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0435EF20177B4D6700CB0B14 /* InfoPlist.strings */; };
+		0435EF24177B4D6700CB0B14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435EF23177B4D6700CB0B14 /* main.m */; };
+		0435EF28177B4D6700CB0B14 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435EF27177B4D6700CB0B14 /* AppDelegate.m */; };
+		0435EF2A177B4D6700CB0B14 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0435EF29177B4D6700CB0B14 /* Default.png */; };
+		0435EF2C177B4D6700CB0B14 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0435EF2B177B4D6700CB0B14 /* Default@2x.png */; };
+		0435EF2E177B4D6700CB0B14 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0435EF2D177B4D6700CB0B14 /* Default-568h@2x.png */; };
+		0435F187177B4E8C00CB0B14 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435F186177B4E8C00CB0B14 /* FacebookSDK.framework */; };
+		0435F191177B4F6400CB0B14 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435F190177B4F6400CB0B14 /* Accounts.framework */; };
+		0435F193177B4F8C00CB0B14 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435F192177B4F8C00CB0B14 /* libsqlite3.dylib */; };
+		0435F197177B4FDB00CB0B14 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435F196177B4FDB00CB0B14 /* Social.framework */; };
+		0435F199177B4FE900CB0B14 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435F198177B4FE900CB0B14 /* Security.framework */; };
+		0435F19D177B504F00CB0B14 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0435F19C177B504F00CB0B14 /* AdSupport.framework */; };
+		0435F1BD177B513B00CB0B14 /* SocialAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1A0177B513B00CB0B14 /* SocialAPIHelper.m */; };
+		0435F1BE177B513B00CB0B14 /* IGRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1A5177B513B00CB0B14 /* IGRequest.m */; };
+		0435F1BF177B513B00CB0B14 /* Instagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1A7177B513B00CB0B14 /* Instagram.m */; };
+		0435F1C0177B513B00CB0B14 /* InstagramAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1A9177B513B00CB0B14 /* InstagramAPIHelper.m */; };
+		0435F1C1177B513B00CB0B14 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1AE177B513B00CB0B14 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0435F1C2177B513B00CB0B14 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1B0177B513B00CB0B14 /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0435F1C3177B513B00CB0B14 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1B2177B513B00CB0B14 /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0435F1C4177B513B00CB0B14 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1B4177B513B00CB0B14 /* TWAPIManager.m */; };
+		0435F1C5177B513B00CB0B14 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1B6177B513B00CB0B14 /* TWSignedRequest.m */; };
+		0435F1C6177B513B00CB0B14 /* TwitterAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1B8177B513B00CB0B14 /* TwitterAPIHelper.m */; };
+		0435F1C7177B513B00CB0B14 /* FacebookAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0435F1BB177B513B00CB0B14 /* FacebookAPIHelper.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0435EF14177B4D6700CB0B14 /* SocialAPIHelpers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialAPIHelpers.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0435EF17177B4D6700CB0B14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0435EF19177B4D6700CB0B14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0435EF1B177B4D6700CB0B14 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0435EF1F177B4D6700CB0B14 /* SocialAPIHelpers-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SocialAPIHelpers-Info.plist"; sourceTree = "<group>"; };
+		0435EF21177B4D6700CB0B14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0435EF23177B4D6700CB0B14 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0435EF25177B4D6700CB0B14 /* SocialAPIHelpers-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SocialAPIHelpers-Prefix.pch"; sourceTree = "<group>"; };
+		0435EF26177B4D6700CB0B14 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0435EF27177B4D6700CB0B14 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0435EF29177B4D6700CB0B14 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		0435EF2B177B4D6700CB0B14 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		0435EF2D177B4D6700CB0B14 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		0435F186177B4E8C00CB0B14 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		0435F190177B4F6400CB0B14 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		0435F192177B4F8C00CB0B14 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0435F194177B4FC900CB0B14 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		0435F196177B4FDB00CB0B14 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		0435F198177B4FE900CB0B14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0435F19C177B504F00CB0B14 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		0435F19F177B513B00CB0B14 /* SocialAPIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialAPIHelper.h; sourceTree = "<group>"; };
+		0435F1A0177B513B00CB0B14 /* SocialAPIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialAPIHelper.m; sourceTree = "<group>"; };
+		0435F1A3177B513B00CB0B14 /* IGConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGConnect.h; sourceTree = "<group>"; };
+		0435F1A4177B513B00CB0B14 /* IGRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGRequest.h; sourceTree = "<group>"; };
+		0435F1A5177B513B00CB0B14 /* IGRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGRequest.m; sourceTree = "<group>"; };
+		0435F1A6177B513B00CB0B14 /* Instagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instagram.h; sourceTree = "<group>"; };
+		0435F1A7177B513B00CB0B14 /* Instagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Instagram.m; sourceTree = "<group>"; };
+		0435F1A8177B513B00CB0B14 /* InstagramAPIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramAPIHelper.h; sourceTree = "<group>"; };
+		0435F1A9177B513B00CB0B14 /* InstagramAPIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramAPIHelper.m; sourceTree = "<group>"; };
+		0435F1AD177B513B00CB0B14 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		0435F1AE177B513B00CB0B14 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		0435F1AF177B513B00CB0B14 /* OAuth+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OAuth+Additions.h"; sourceTree = "<group>"; };
+		0435F1B0177B513B00CB0B14 /* OAuth+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OAuth+Additions.m"; sourceTree = "<group>"; };
+		0435F1B1177B513B00CB0B14 /* OAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthCore.h; sourceTree = "<group>"; };
+		0435F1B2177B513B00CB0B14 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthCore.m; sourceTree = "<group>"; };
+		0435F1B3177B513B00CB0B14 /* TWAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWAPIManager.h; sourceTree = "<group>"; };
+		0435F1B4177B513B00CB0B14 /* TWAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWAPIManager.m; sourceTree = "<group>"; };
+		0435F1B5177B513B00CB0B14 /* TWSignedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWSignedRequest.h; sourceTree = "<group>"; };
+		0435F1B6177B513B00CB0B14 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWSignedRequest.m; sourceTree = "<group>"; };
+		0435F1B7177B513B00CB0B14 /* TwitterAPIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAPIHelper.h; sourceTree = "<group>"; };
+		0435F1B8177B513B00CB0B14 /* TwitterAPIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAPIHelper.m; sourceTree = "<group>"; };
+		0435F1BA177B513B00CB0B14 /* FacebookAPIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookAPIHelper.h; sourceTree = "<group>"; };
+		0435F1BB177B513B00CB0B14 /* FacebookAPIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookAPIHelper.m; sourceTree = "<group>"; };
+		0435F1BC177B513B00CB0B14 /* SocialNetworkKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SocialNetworkKeys.h; path = ../../SocialNetworkKeys.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0435EF11177B4D6700CB0B14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0435F19D177B504F00CB0B14 /* AdSupport.framework in Frameworks */,
+				0435F199177B4FE900CB0B14 /* Security.framework in Frameworks */,
+				0435F197177B4FDB00CB0B14 /* Social.framework in Frameworks */,
+				0435F193177B4F8C00CB0B14 /* libsqlite3.dylib in Frameworks */,
+				0435F191177B4F6400CB0B14 /* Accounts.framework in Frameworks */,
+				0435EF18177B4D6700CB0B14 /* UIKit.framework in Frameworks */,
+				0435EF1A177B4D6700CB0B14 /* Foundation.framework in Frameworks */,
+				0435EF1C177B4D6700CB0B14 /* CoreGraphics.framework in Frameworks */,
+				0435F187177B4E8C00CB0B14 /* FacebookSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0435EF0B177B4D6700CB0B14 = {
+			isa = PBXGroup;
+			children = (
+				0435EF1D177B4D6700CB0B14 /* SocialAPIHelpers */,
+				0435EF16177B4D6700CB0B14 /* Frameworks */,
+				0435EF15177B4D6700CB0B14 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0435EF15177B4D6700CB0B14 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0435EF14177B4D6700CB0B14 /* SocialAPIHelpers.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0435EF16177B4D6700CB0B14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0435F19C177B504F00CB0B14 /* AdSupport.framework */,
+				0435F198177B4FE900CB0B14 /* Security.framework */,
+				0435F196177B4FDB00CB0B14 /* Social.framework */,
+				0435F194177B4FC900CB0B14 /* Twitter.framework */,
+				0435F192177B4F8C00CB0B14 /* libsqlite3.dylib */,
+				0435F190177B4F6400CB0B14 /* Accounts.framework */,
+				0435F186177B4E8C00CB0B14 /* FacebookSDK.framework */,
+				0435EF17177B4D6700CB0B14 /* UIKit.framework */,
+				0435EF19177B4D6700CB0B14 /* Foundation.framework */,
+				0435EF1B177B4D6700CB0B14 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0435EF1D177B4D6700CB0B14 /* SocialAPIHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				0435EF26177B4D6700CB0B14 /* AppDelegate.h */,
+				0435EF27177B4D6700CB0B14 /* AppDelegate.m */,
+				0435F1BC177B513B00CB0B14 /* SocialNetworkKeys.h */,
+				0435F19E177B513B00CB0B14 /* Abstract */,
+				0435F1A1177B513B00CB0B14 /* Instagram */,
+				0435F1AA177B513B00CB0B14 /* Twitter */,
+				0435F1B9177B513B00CB0B14 /* Facebook */,
+				0435EF1E177B4D6700CB0B14 /* Supporting Files */,
+			);
+			path = SocialAPIHelpers;
+			sourceTree = "<group>";
+		};
+		0435EF1E177B4D6700CB0B14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0435EF1F177B4D6700CB0B14 /* SocialAPIHelpers-Info.plist */,
+				0435EF20177B4D6700CB0B14 /* InfoPlist.strings */,
+				0435EF23177B4D6700CB0B14 /* main.m */,
+				0435EF25177B4D6700CB0B14 /* SocialAPIHelpers-Prefix.pch */,
+				0435EF29177B4D6700CB0B14 /* Default.png */,
+				0435EF2B177B4D6700CB0B14 /* Default@2x.png */,
+				0435EF2D177B4D6700CB0B14 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0435F19E177B513B00CB0B14 /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				0435F19F177B513B00CB0B14 /* SocialAPIHelper.h */,
+				0435F1A0177B513B00CB0B14 /* SocialAPIHelper.m */,
+			);
+			name = Abstract;
+			path = ../../Abstract;
+			sourceTree = "<group>";
+		};
+		0435F1A1177B513B00CB0B14 /* Instagram */ = {
+			isa = PBXGroup;
+			children = (
+				0435F1A2177B513B00CB0B14 /* instagram-ios-sdk */,
+				0435F1A8177B513B00CB0B14 /* InstagramAPIHelper.h */,
+				0435F1A9177B513B00CB0B14 /* InstagramAPIHelper.m */,
+			);
+			name = Instagram;
+			path = ../../Instagram;
+			sourceTree = "<group>";
+		};
+		0435F1A2177B513B00CB0B14 /* instagram-ios-sdk */ = {
+			isa = PBXGroup;
+			children = (
+				0435F1A3177B513B00CB0B14 /* IGConnect.h */,
+				0435F1A4177B513B00CB0B14 /* IGRequest.h */,
+				0435F1A5177B513B00CB0B14 /* IGRequest.m */,
+				0435F1A6177B513B00CB0B14 /* Instagram.h */,
+				0435F1A7177B513B00CB0B14 /* Instagram.m */,
+			);
+			path = "instagram-ios-sdk";
+			sourceTree = "<group>";
+		};
+		0435F1AA177B513B00CB0B14 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				0435F1AB177B513B00CB0B14 /* Twitter-Reverse-OAuth */,
+				0435F1B7177B513B00CB0B14 /* TwitterAPIHelper.h */,
+				0435F1B8177B513B00CB0B14 /* TwitterAPIHelper.m */,
+			);
+			name = Twitter;
+			path = ../../Twitter;
+			sourceTree = "<group>";
+		};
+		0435F1AB177B513B00CB0B14 /* Twitter-Reverse-OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				0435F1AC177B513B00CB0B14 /* ABOAuthCore */,
+				0435F1B3177B513B00CB0B14 /* TWAPIManager.h */,
+				0435F1B4177B513B00CB0B14 /* TWAPIManager.m */,
+				0435F1B5177B513B00CB0B14 /* TWSignedRequest.h */,
+				0435F1B6177B513B00CB0B14 /* TWSignedRequest.m */,
+			);
+			path = "Twitter-Reverse-OAuth";
+			sourceTree = "<group>";
+		};
+		0435F1AC177B513B00CB0B14 /* ABOAuthCore */ = {
+			isa = PBXGroup;
+			children = (
+				0435F1AD177B513B00CB0B14 /* NSData+Base64.h */,
+				0435F1AE177B513B00CB0B14 /* NSData+Base64.m */,
+				0435F1AF177B513B00CB0B14 /* OAuth+Additions.h */,
+				0435F1B0177B513B00CB0B14 /* OAuth+Additions.m */,
+				0435F1B1177B513B00CB0B14 /* OAuthCore.h */,
+				0435F1B2177B513B00CB0B14 /* OAuthCore.m */,
+			);
+			path = ABOAuthCore;
+			sourceTree = "<group>";
+		};
+		0435F1B9177B513B00CB0B14 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				0435F1BA177B513B00CB0B14 /* FacebookAPIHelper.h */,
+				0435F1BB177B513B00CB0B14 /* FacebookAPIHelper.m */,
+			);
+			name = Facebook;
+			path = ../../Facebook;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0435EF13177B4D6700CB0B14 /* SocialAPIHelpers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0435EF31177B4D6700CB0B14 /* Build configuration list for PBXNativeTarget "SocialAPIHelpers" */;
+			buildPhases = (
+				0435EF10177B4D6700CB0B14 /* Sources */,
+				0435EF11177B4D6700CB0B14 /* Frameworks */,
+				0435EF12177B4D6700CB0B14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SocialAPIHelpers;
+			productName = SocialAPIHelpers;
+			productReference = 0435EF14177B4D6700CB0B14 /* SocialAPIHelpers.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0435EF0C177B4D6700CB0B14 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = progenius;
+			};
+			buildConfigurationList = 0435EF0F177B4D6700CB0B14 /* Build configuration list for PBXProject "SocialAPIHelpers" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				he,
+			);
+			mainGroup = 0435EF0B177B4D6700CB0B14;
+			productRefGroup = 0435EF15177B4D6700CB0B14 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0435EF13177B4D6700CB0B14 /* SocialAPIHelpers */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0435EF12177B4D6700CB0B14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0435EF22177B4D6700CB0B14 /* InfoPlist.strings in Resources */,
+				0435EF2A177B4D6700CB0B14 /* Default.png in Resources */,
+				0435EF2C177B4D6700CB0B14 /* Default@2x.png in Resources */,
+				0435EF2E177B4D6700CB0B14 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0435EF10177B4D6700CB0B14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0435EF24177B4D6700CB0B14 /* main.m in Sources */,
+				0435EF28177B4D6700CB0B14 /* AppDelegate.m in Sources */,
+				0435F1BD177B513B00CB0B14 /* SocialAPIHelper.m in Sources */,
+				0435F1BE177B513B00CB0B14 /* IGRequest.m in Sources */,
+				0435F1BF177B513B00CB0B14 /* Instagram.m in Sources */,
+				0435F1C0177B513B00CB0B14 /* InstagramAPIHelper.m in Sources */,
+				0435F1C1177B513B00CB0B14 /* NSData+Base64.m in Sources */,
+				0435F1C2177B513B00CB0B14 /* OAuth+Additions.m in Sources */,
+				0435F1C3177B513B00CB0B14 /* OAuthCore.m in Sources */,
+				0435F1C4177B513B00CB0B14 /* TWAPIManager.m in Sources */,
+				0435F1C5177B513B00CB0B14 /* TWSignedRequest.m in Sources */,
+				0435F1C6177B513B00CB0B14 /* TwitterAPIHelper.m in Sources */,
+				0435F1C7177B513B00CB0B14 /* FacebookAPIHelper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0435EF20177B4D6700CB0B14 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0435EF21177B4D6700CB0B14 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0435EF2F177B4D6700CB0B14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0435EF30177B4D6700CB0B14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0435EF32177B4D6700CB0B14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FacebookSDK\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SocialAPIHelpers/SocialAPIHelpers-Prefix.pch";
+				INFOPLIST_FILE = "SocialAPIHelpers/SocialAPIHelpers-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0435EF33177B4D6700CB0B14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FacebookSDK\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SocialAPIHelpers/SocialAPIHelpers-Prefix.pch";
+				INFOPLIST_FILE = "SocialAPIHelpers/SocialAPIHelpers-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0435EF0F177B4D6700CB0B14 /* Build configuration list for PBXProject "SocialAPIHelpers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0435EF2F177B4D6700CB0B14 /* Debug */,
+				0435EF30177B4D6700CB0B14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0435EF31177B4D6700CB0B14 /* Build configuration list for PBXNativeTarget "SocialAPIHelpers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0435EF32177B4D6700CB0B14 /* Debug */,
+				0435EF33177B4D6700CB0B14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0435EF0C177B4D6700CB0B14 /* Project object */;
+}
