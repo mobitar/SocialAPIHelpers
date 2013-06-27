@@ -14,7 +14,7 @@
 #define DEV_FACEBOOK_APP_ID @""
 #define DEV_FACEBOOK_DISPLAY_NAME @""
 
-#define PRODUCTION_INSTAGRAM_CLIENT_ID @"testing"
+#define PRODUCTION_INSTAGRAM_CLIENT_ID @"testing bra"
 #define DEV_INSTAGRAM_CLIENT_ID @""
 
 NSString *TwitterConsumerKey()
