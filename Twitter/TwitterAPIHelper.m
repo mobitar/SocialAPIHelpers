@@ -3,6 +3,7 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "TWAPIManager.h"
+#import "MBFlatAlertView.h"
 
 @interface TwitterAPIHelper () <UIActionSheetDelegate>
 @property (nonatomic, strong) ACAccountStore *accountStore;
@@ -41,6 +42,7 @@
             if (granted) {
                 [self showActionSheet];
             } else {
+                [[MBFlatAlertView alertWithTitle:@"Access denied" detailText:@"We were unable to access your Twitter accounts. Please go into your device settings and give Freebie access to Twitter" cancelTitle:@"Ok" cancelBlock:nil] addToDisplayQueue];
                 NSLog(@"You were not granted access to the Twitter accounts.");
             }
         });
@@ -51,6 +53,12 @@
 {
     ACAccountType *accountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:accountType];
+    
+    if(twitterAccounts.count == 0) {
+        [[MBFlatAlertView alertWithTitle:@"No accounts" detailText:@"You don't have any Twitter accounts linked to your device. Please go into your device settings and add a Twitter account." cancelTitle:@"Ok" cancelBlock:nil] addToDisplayQueue];
+        self.errorBlock(nil);
+        return;
+    }
     
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Choose an Account" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     

@@ -62,7 +62,6 @@
             [self requestForMe];
         }
     } else {
-
         [self.session openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             [FBSession setActiveSession:session];
             if(!error) {
@@ -116,7 +115,7 @@ NSArray *Permissions()
 - (void)beginSessionAndAllowLoginUI:(BOOL)showLogin completion:(SocialBlock)completionBlock errorBlock:(SocialErrorBlock)errorBlock
 {
     [FBSession setActiveSession:nil];
-    self.session = [FBSession new];
+    self.session = [[FBSession alloc] initWithAppID:FacebookAppId() permissions:Permissions() defaultAudience:FBSessionDefaultAudienceEveryone urlSchemeSuffix:nil tokenCacheStrategy:nil];
     [self setSettings];
     
     self.completionBlock = completionBlock;
