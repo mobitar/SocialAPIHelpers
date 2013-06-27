@@ -7,7 +7,7 @@
 
 #import "OAuthCore.h"
 #import "TWSignedRequest.h"
-#import "SocialNetworkKeys.h"
+#import "SocialNetworksKeys.h"
 
 #define TW_HTTP_METHOD_GET @"GET"
 #define TW_HTTP_METHOD_POST @"POST"
@@ -90,11 +90,11 @@
 }
 
 + (NSString *)consumerKey {
-    return TWITTER_CONSUMER_KEY;
+    return TwitterConsumerKey();
 }
 
 + (NSString *)consumerSecret {
-    return TWITTER_CONSUMER_SECRET;
+    return TwitterConsumerSecret();
 }
 
 @end

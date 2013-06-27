@@ -1,7 +1,7 @@
 
 #import "InstagramAPIHelper.h"
 #import "IGConnect.h"
-#import "SocialNetworkKeys.h"
+#import "SocialNetworksKeys.h"
 
 @interface InstagramAPIHelper () <IGSessionDelegate>
 @property (nonatomic, copy) SocialBlock completionBlock;
@@ -15,7 +15,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [self.class new];
-        instance.instagram = [[Instagram alloc] initWithClientId:INSTAGRAM_CLIENT_ID delegate:instance];
+        instance.instagram = [[Instagram alloc] initWithClientId:InstagramClientId() delegate:instance];
     });
     
     return instance;

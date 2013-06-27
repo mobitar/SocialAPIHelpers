@@ -2,6 +2,7 @@
 #import "FacebookAPIHelper.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <FacebookSDK/FBGraphObject.h>
+#import "SocialNetworksKeys.h"
 
 @interface FacebookAPIHelper ()
 @property (nonatomic, copy) SocialBlock completionBlock;
@@ -19,6 +20,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [self.class new];
+        [FBSettings setDefaultAppID:FacebookAppId()];
+        [FBSettings setDefaultDisplayName:FacebookDisplayName()];
     });
     return instance;
 }
