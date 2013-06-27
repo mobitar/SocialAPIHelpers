@@ -20,10 +20,15 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [self.class new];
-        [FBSettings setDefaultAppID:FacebookAppId()];
-        [FBSettings setDefaultDisplayName:FacebookDisplayName()];
+        [instance setSettings];
     });
     return instance;
+}
+
+- (void)setSettings
+{
+    [FBSettings setDefaultAppID:FacebookAppId()];
+    [FBSettings setDefaultDisplayName:FacebookDisplayName()];
 }
 
 - (BOOL)handleOpenUrl:(NSURL*)url
@@ -112,6 +117,7 @@ NSArray *Permissions()
 {
     [FBSession setActiveSession:nil];
     self.session = [FBSession new];
+    [self setSettings];
     
     self.completionBlock = completionBlock;
     self.failBlock = errorBlock;
