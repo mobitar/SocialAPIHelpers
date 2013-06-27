@@ -85,7 +85,7 @@
 
 NSArray *Permissions()
 {
-    return @[@"email", @"publish_actions", @"user_birthday", @"user_location"];
+    return @[@"publish_actions"];
 }
 
 - (void)requestNewPublishPermissions
@@ -115,7 +115,7 @@ NSArray *Permissions()
 - (void)beginSessionAndAllowLoginUI:(BOOL)showLogin completion:(SocialBlock)completionBlock errorBlock:(SocialErrorBlock)errorBlock
 {
     [FBSession setActiveSession:nil];
-    self.session = [[FBSession alloc] initWithAppID:FacebookAppId() permissions:Permissions() defaultAudience:FBSessionDefaultAudienceEveryone urlSchemeSuffix:nil tokenCacheStrategy:nil];
+    self.session = [[FBSession alloc] initWithAppID:FacebookAppId() permissions:@[@"basic_info"] defaultAudience:FBSessionDefaultAudienceEveryone urlSchemeSuffix:nil tokenCacheStrategy:nil];
     [self setSettings];
     
     self.completionBlock = completionBlock;

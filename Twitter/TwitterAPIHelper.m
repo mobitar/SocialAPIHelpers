@@ -42,8 +42,8 @@
             if (granted) {
                 [self showActionSheet];
             } else {
-                [[MBFlatAlertView alertWithTitle:@"Access denied" detailText:@"We were unable to access your Twitter accounts. Please go into your device settings and give Freebie access to Twitter" cancelTitle:@"Ok" cancelBlock:nil] addToDisplayQueue];
-                NSLog(@"You were not granted access to the Twitter accounts.");
+                [[MBFlatAlertView alertWithTitle:@"Access denied" detailText:@"We were unable to access your Twitter accounts. Please go into your device settings and give Freebie access to Twitter." cancelTitle:@"Ok" cancelBlock:nil] addToDisplayQueue];
+                self.errorBlock(nil);
             }
         });
     }];
