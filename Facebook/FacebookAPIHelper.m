@@ -46,7 +46,11 @@
     [[FBRequest requestForMe] startWithCompletionHandler:
      ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
          if (!error) {
-             self.completionBlock(@{@"token" : self.session.accessTokenData.accessToken, @"name" : user.name, @"id" : user.id});
+             self.completionBlock(@{
+                                  @"token" : self.session.accessTokenData.accessToken,
+                                  @"name" : user.name,
+                                  @"id" : user.id
+                                  });
          } else {
              NSLog(@"Me request:%@", error.description);
          }
