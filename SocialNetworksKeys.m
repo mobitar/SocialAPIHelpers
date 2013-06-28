@@ -1,43 +1,39 @@
 #import "SocialNetworksKeys.h"
 
-#define PRODUCTION 0
+static NSString *rootKey = @"SocialAPIHelpers";
 
-#define PRODUCTION_TWITTER_CONSUMER_KEY @""
-#define PRODUCTION_TWITTER_CONSUMER_SECRET @""
+NSDictionary *rootDictionary()
+{
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:rootKey];
+}
 
-#define DEV_TWITTER_CONSUMER_KEY @""
-#define DEV_TWITTER_CONSUMER_SECRET @""
-
-#define PRODUCTION_FACEBOOK_APP_ID @""
-#define PRODUCTION_FACEBOOK_DISPLAY_NAME @""
-
-#define DEV_FACEBOOK_APP_ID @""
-#define DEV_FACEBOOK_DISPLAY_NAME @""
-
-#define PRODUCTION_INSTAGRAM_CLIENT_ID @"testing bra"
-#define DEV_INSTAGRAM_CLIENT_ID @""
+NSString *ModeKey()
+{
+    BOOL isProduction = [[rootDictionary() objectForKey:@"Production"] boolValue];
+    return isProduction ? @"Production" : @"Development";
+}
 
 NSString *TwitterConsumerKey()
 {
-    return PRODUCTION ? PRODUCTION_TWITTER_CONSUMER_KEY : DEV_TWITTER_CONSUMER_KEY;
+    return rootDictionary()[ModeKey()][@"Twitter"][@"consumerKey"];
 }
 
 NSString *TwitterConsumerSecret()
 {
-    return PRODUCTION ? PRODUCTION_TWITTER_CONSUMER_SECRET : DEV_TWITTER_CONSUMER_SECRET;
+    return rootDictionary()[ModeKey()][@"Twitter"][@"consumerSecret"];
 }
 
 NSString *FacebookAppId()
 {
-    return PRODUCTION ? PRODUCTION_FACEBOOK_APP_ID : DEV_FACEBOOK_APP_ID;
+    return rootDictionary()[ModeKey()][@"Facebook"][@"id"];
 }
 
 NSString *FacebookDisplayName()
 {
-    return PRODUCTION ? PRODUCTION_FACEBOOK_DISPLAY_NAME : DEV_FACEBOOK_DISPLAY_NAME;
+    return rootDictionary()[ModeKey()][@"Facebook"][@"name"];
 }
 
 NSString *InstagramClientId()
 {
-    return PRODUCTION ? PRODUCTION_INSTAGRAM_CLIENT_ID : DEV_INSTAGRAM_CLIENT_ID;
+    return rootDictionary()[ModeKey()][@"Instagram"][@"id"];
 }
