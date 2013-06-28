@@ -15,25 +15,25 @@ NSString *ModeKey()
 
 NSString *TwitterConsumerKey()
 {
-    return rootDictionary()[ModeKey()][@"Twitter"][@"consumerKey"];
+    return rootDictionary()[@"Twitter"][ModeKey()][@"consumerKey"];
 }
 
 NSString *TwitterConsumerSecret()
 {
-    return rootDictionary()[ModeKey()][@"Twitter"][@"consumerSecret"];
+    return rootDictionary()[@"Twitter"][ModeKey()][@"consumerSecret"];
 }
 
 NSString *FacebookAppId()
 {
-    return rootDictionary()[ModeKey()][@"Facebook"][@"id"];
+    return rootDictionary()[@"Facebook"][ModeKey()][@"id"];
 }
 
 NSString *FacebookDisplayName()
 {
-    return rootDictionary()[ModeKey()][@"Facebook"][@"name"];
+    return rootDictionary()[@"Facebook"][ModeKey()][@"name"];
 }
 
 NSString *InstagramClientId()
 {
-    return rootDictionary()[ModeKey()][@"Instagram"][@"id"];
+    return rootDictionary()[@"Instagram"][ModeKey()][@"id"];
 }
