@@ -81,7 +81,7 @@
             if (responseData) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                    NSLog(@"Twitter Auth Response str:%@", responseStr);
+//                    NSLog(@"Twitter Auth Response str:%@", responseStr);
                     NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
                     if(parts.count < 2) {
                         self.errorBlock(error);

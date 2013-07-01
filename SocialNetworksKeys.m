@@ -13,6 +13,11 @@ NSString *ModeKey()
     return isProduction ? @"Production" : @"Development";
 }
 
+BOOL isProduction()
+{
+    return [ModeKey() isEqualToString:@"Production"];
+}
+
 NSString *TwitterConsumerKey()
 {
     return rootDictionary()[@"Twitter"][ModeKey()][@"consumerKey"];

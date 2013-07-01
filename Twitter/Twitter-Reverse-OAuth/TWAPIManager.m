@@ -105,7 +105,7 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     NSURL *authTokenURL = [NSURL URLWithString:TW_OAUTH_URL_AUTH_TOKEN];
     id<GenericTwitterRequest> step2Request = [self requestWithUrl:authTokenURL parameters:step2Params requestMethod:SLRequestMethodPOST];
     
-    NSLog(@"Step 2: Sending a request to %@\nparameters %@\n", authTokenURL, step2Params);
+//    NSLog(@"Step 2: Sending a request to %@\nparameters %@\n", authTokenURL, step2Params);
     [step2Request setAccount:account];
     [step2Request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -128,7 +128,7 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     NSDictionary *dict = @{TW_X_AUTH_MODE_KEY: TW_X_AUTH_MODE_REVERSE_AUTH};
     TWSignedRequest *step1Request = [[TWSignedRequest alloc] initWithURL:url parameters:dict requestMethod:TWSignedRequestMethodPOST];
     
-    NSLog(@"Step 1: Sending a request to %@\nparameters %@\n", url, dict);
+//    NSLog(@"Step 1: Sending a request to %@\nparameters %@\n", url, dict);
     
     [step1Request performRequestWithHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
