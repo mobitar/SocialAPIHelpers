@@ -106,7 +106,14 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     id<GenericTwitterRequest> step2Request = [self requestWithUrl:authTokenURL parameters:step2Params requestMethod:SLRequestMethodPOST];
     
 //    NSLog(@"Step 2: Sending a request to %@\nparameters %@\n", authTokenURL, step2Params);
-    [step2Request setAccount:account];
+    @try {
+        [step2Request setAccount:account];
+    }
+    @catch (NSException *exception) {
+        completion(nil, [NSError new]);
+        return;
+    }
+
     [step2Request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             completion(responseData, error);

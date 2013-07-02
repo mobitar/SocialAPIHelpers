@@ -123,11 +123,15 @@ NSString *SecretFromOAuthResponseString(NSString *string)
 
 - (void)performReverseOAuthForAccount:(ACAccount*)account completion:(TwitterReverseOAuthHandler)completionHandler
 {
+    if(!account) {
+        completionHandler(nil, nil, [NSError new]);
+        return;
+    }
+    
     [self.apiManager performReverseAuthForAccount:account withHandler:^(NSData *responseData, NSError *error) {
         if (responseData) {
             NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
-            
             if(parts.count < 2) {
                 completionHandler(nil, nil, [NSError new]);
                 return;
@@ -181,8 +185,6 @@ NSString *SecretFromOAuthResponseString(NSString *string)
     assert(_externalAuthenticationParentController);
     [_externalAuthenticationParentController presentViewController:controller animated:YES completion:nil];
 }
-
-
 
 - (NSString*)cachedToken
 {
