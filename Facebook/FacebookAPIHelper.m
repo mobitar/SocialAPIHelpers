@@ -5,13 +5,11 @@
 #import "SocialNetworksKeys.h"
 
 @interface FacebookAPIHelper ()
-@property (nonatomic, copy) SocialBlock completionBlock;
-@property (nonatomic, copy) SocialErrorBlock failBlock;
 @end
 
 @implementation FacebookAPIHelper
 {
-    BOOL isGettingWritePermissions;
+    BOOL isLoggingOut;
 }
 
 + (instancetype)sharedInstance
@@ -33,123 +31,131 @@
 
 - (BOOL)handleOpenUrl:(NSURL*)url
 {
-   return [self.session handleOpenURL:url];
+   return [FBSession.activeSession handleOpenURL:url];
 }
 
-- (BOOL)shouldRequestPublishActions
+- (void)printSessionStates
 {
-    return [FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound;
+    MBLog([[FBSession activeSession] isOpen]);
 }
 
-- (void)requestForMe
-{
-    [[FBRequest requestForMe] startWithCompletionHandler:
-     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
-         if (!error) {
-             self.completionBlock(@{
-                                  @"token" : self.session.accessTokenData.accessToken,
-                                  @"name" : user.name,
-                                  @"id" : user.id
-                                  });
-         } else {
-             NSLog(@"Me request:%@", error.description);
-         }
-     }];
-}
-
-- (void)openSession
+- (void)openSessionWithBasicInfo:(void(^)(NSError *error))completionBlock
 {
     if([[FBSession activeSession] isOpen]) {
-        if([self shouldRequestPublishActions]) {
-            [self requestPermissionAndPost];
-        } else {
-            [self requestForMe];
-        }
-    } else {
-        [self.session openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-            [FBSession setActiveSession:session];
-            if(!error) {
-                if ([self shouldRequestPublishActions])
-                    [self requestPermissionAndPost];
-                else [self requestForMe];
-            }
-            else {
-                [self failWithError:error];
-            }
-        }];
-    }
-}
-
-- (void)failWithError:(NSError*)error
-{
-    self.session = nil;
-    [FBSession setActiveSession:nil];
-    self.failBlock(error);
-}
-
-NSArray *Permissions()
-{
-    return @[@"publish_actions"];
-}
-
-- (void)requestNewPublishPermissions
-{
-    [FBSession.activeSession requestNewPublishPermissions:Permissions() defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
-        if(error)
-            NSLog(@"Error:%@", (error.description));
-    }];
-}
-
-- (void)requestPermissionAndPost
-{
-    if([[FBSession activeSession] isOpen] == NO) {
-        [self requestForMe];
+        completionBlock(nil);
         return;
     }
     
-    [FBSession.activeSession requestNewPublishPermissions:Permissions() defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
-        if (!error) {
-            [self requestForMe];
-        } else {
-            [self failWithError:error];
-        }
+    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(error);
+        });
     }];
 }
 
-- (void)beginSessionAndAllowLoginUI:(BOOL)showLogin completion:(SocialBlock)completionBlock errorBlock:(SocialErrorBlock)errorBlock
+static NSString *const publish_actions = @"publish_actions";
+
+- (void)requestPublishPermissions:(void(^)(NSError *error))completionBlock
 {
-    [FBSession setActiveSession:nil];
-    self.session = [[FBSession alloc] initWithAppID:FacebookAppId() permissions:@[@"basic_info"] defaultAudience:FBSessionDefaultAudienceEveryone urlSchemeSuffix:nil tokenCacheStrategy:nil];
-    [self setSettings];
+    if(isLoggingOut) {
+        return;
+    }
     
-    self.completionBlock = completionBlock;
-    self.failBlock = errorBlock;
+    if([[[FBSession activeSession] permissions] indexOfObject:publish_actions] != NSNotFound) {
+        completionBlock(nil);
+        return;
+    }
     
-    [self openSession];
+    [FBSession.activeSession requestNewPublishPermissions:@[publish_actions] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(error);
+        });
+    }];
+}
+
+- (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock
+{
+    @weakify(self);
+    [self openSessionWithBasicInfo:^(NSError *error) {
+        @strongify(self);
+        if(error) {
+            completionBlock(error);
+            return;
+        }
+        
+        [self requestPublishPermissions:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }];
+    }];
+}
+
+- (void)openSessionWithBasicInfoThenRequestPublishPermissionsAndGetAudienceType:(void(^)(NSError *error, FacebookAudienceType))completionBlock
+{
+    [self openSessionWithBasicInfoThenRequestPublishPermissions:^(NSError *error) {
+        if(error) {
+            completionBlock(error, 0);
+            return;
+        }
+        
+        [self getAppAudienceType:^(FacebookAudienceType audienceType, NSError *error) {
+            if(error) {
+                completionBlock(error, 0);
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(nil, audienceType);
+            });
+        }];
+    }];
+}
+
+- (void)getUserInfo:(void(^)(id<FBGraphUser> user, NSError *error))completionBlock
+{
+    [[FBRequest requestForMe] startWithCompletionHandler:
+     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+         completionBlock(user, error);
+     }];
+}
+
+- (NSString*)accessToken
+{
+    return [[[FBSession activeSession] accessTokenData] accessToken];
+}
+
+- (void)logout
+{
+    // there is a weird bug where calling closeAndClearTokenInformation causes previous completionBlocks to be called
+    // such as in requestPublishPermissions, so we set a flag and query it in those methods to know when to skip call
+    isLoggingOut = YES;
+    [FBSession.activeSession closeAndClearTokenInformation];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        isLoggingOut = NO;
+    });
 }
 
 #pragma mark - Other
 
-FacebookAudienceType AudienceTypeForValue(NSString *value) {
-    if([value isEqualToString:@"ALL_FRIENDS"])
-        return FacebookAudienceTypeFriends;
-    if([value isEqualToString:@"SELF"])
-        return FacebookAudienceTypeSelf;
-    if([value isEqualToString:@"EVERYONE"])
-        return FacebookAudienceTypeEveryone;
-    if([value isEqualToString:@"FRIENDS_OF_FRIENDS"])
-        return FacebookAudienceTypeFriends;
-    if([value isEqualToString:@"NO_FRIENDS"])
-        return FacebookAudienceTypeSelf;
-    
+FacebookAudienceType AudienceTypeForValue(NSString *value)
+{
+    if([value isEqualToString:@"ALL_FRIENDS"])        return FacebookAudienceTypeFriends;
+    if([value isEqualToString:@"SELF"])               return FacebookAudienceTypeSelf;
+    if([value isEqualToString:@"EVERYONE"])           return FacebookAudienceTypeEveryone;
+    if([value isEqualToString:@"FRIENDS_OF_FRIENDS"]) return FacebookAudienceTypeFriends;
+    if([value isEqualToString:@"NO_FRIENDS"])         return FacebookAudienceTypeSelf;
     return FacebookAudienceTypeSelf;
 }
 
-- (void)checkForAudienceTypeWithCompletionBlock:(void(^)(FacebookAudienceType audienceType))completionBlock errorBlock:(void(^)(NSError *error))errorBlock
+BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type)
+{
+    return type == FacebookAudienceTypeSelf;
+}
+
+- (void)getAppAudienceType:(void(^)(FacebookAudienceType audienceType, NSError *error))completionBlock
 {
     if(![[[FBSession activeSession] accessTokenData] accessToken]) {
-        if(errorBlock)
-            errorBlock(nil);
+        completionBlock(0, [NSError new]);
         return;
     }
     
@@ -157,16 +163,14 @@ FacebookAudienceType AudienceTypeForValue(NSString *value) {
     NSDictionary *queryParam = @{ @"q": query, @"access_token" :  [[[FBSession activeSession] accessTokenData] accessToken]};
     
     [FBRequestConnection startWithGraphPath:@"/fql" parameters:queryParam HTTPMethod:@"GET" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (error) {
-            NSLog(@"Error: %@", [error localizedDescription]);
-            if(errorBlock)
-                errorBlock(error);
-        } else {
-            FBGraphObject *object = result;
-            id type = [object objectForKey:@"data"][0][@"value"];
-            if(completionBlock)
-                completionBlock(AudienceTypeForValue(type));
+        if(error) {
+            completionBlock(0, error);
+            return;
         }
+        
+        FBGraphObject *object = result;
+        id type = [object objectForKey:@"data"][0][@"value"];
+        completionBlock(AudienceTypeForValue(type), nil);
     }];
 }
 

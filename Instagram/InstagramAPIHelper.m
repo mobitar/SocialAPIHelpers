@@ -49,9 +49,7 @@
 -(void)igDidNotLogin:(BOOL)cancelled
 {
     if(self.errorBlock)
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.errorBlock([NSError new]);
-        });
+            self.errorBlock(nil);
 
     [self clearBlocks];
 }

@@ -2,10 +2,7 @@
 #import <Foundation/Foundation.h>
 #import "SocialAPIHelper.h"
 
-@class FBSession;
-@interface FacebookAPIHelper : SocialAPIHelper
-@property (nonatomic) FBSession *session;
-- (BOOL)handleOpenUrl:(NSURL*)url;
+@protocol FBGraphUser;
 
 typedef NS_ENUM(NSInteger, FacebookAudienceType)
 {
@@ -14,6 +11,20 @@ typedef NS_ENUM(NSInteger, FacebookAudienceType)
     FacebookAudienceTypeEveryone
 };
 
-- (void)checkForAudienceTypeWithCompletionBlock:(void(^)(FacebookAudienceType audienceType))completionBlock errorBlock:(void(^)(NSError *error))errorBlock;
-- (void)requestNewPublishPermissions;
+BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type);
+
+@interface FacebookAPIHelper : NSObject
+
++ (instancetype)sharedInstance;
+
+- (void)getAppAudienceType:(void(^)(FacebookAudienceType audienceType, NSError *error))completionBlock;
+- (void)openSessionWithBasicInfo:(void(^)( NSError *error))completionBlock;
+- (void)requestPublishPermissions:(void(^)( NSError *error))completionBlock;
+- (void)getUserInfo:(void(^)(id<FBGraphUser> user, NSError *error))completionBlock;
+- (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock;
+- (void)openSessionWithBasicInfoThenRequestPublishPermissionsAndGetAudienceType:(void(^)(NSError *error, FacebookAudienceType))completionBlock;
+
+- (NSString*)accessToken;
+- (BOOL)handleOpenUrl:(NSURL*)url;
+- (void)logout;
 @end
