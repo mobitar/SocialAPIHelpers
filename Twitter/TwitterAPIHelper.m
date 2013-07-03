@@ -109,7 +109,6 @@ NSString *TokenFromOAuthResponseString(NSString *string)
 {
     NSArray *parts = [string componentsSeparatedByString:@"&"];
     NSString *token = [parts[0] substringFromIndex:12];
-    MBLog(token);
     return token;
 }
 
@@ -117,7 +116,6 @@ NSString *SecretFromOAuthResponseString(NSString *string)
 {
     NSArray *parts = [string componentsSeparatedByString:@"&"];
     NSString *secret = [parts[1] substringFromIndex:19];
-    MBLog(secret);
     return secret;
 }
 

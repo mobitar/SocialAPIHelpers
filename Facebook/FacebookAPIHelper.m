@@ -5,12 +5,12 @@
 #import "SocialNetworksKeys.h"
 
 @interface FacebookAPIHelper ()
+// single use blocks. these blocks are immediatly nulled after they are used
+@property (nonatomic, copy) void(^openBlock)(NSError *error);
+@property (nonatomic, copy) void(^permissionsBlock)(NSError *error);
 @end
 
 @implementation FacebookAPIHelper
-{
-    BOOL isLoggingOut;
-}
 
 + (instancetype)sharedInstance
 {
@@ -34,9 +34,58 @@
    return [FBSession.activeSession handleOpenURL:url];
 }
 
-- (void)printSessionStates
+NSString *NSStringFromFBSessionState(FBSessionState state)
 {
-    MBLog([[FBSession activeSession] isOpen]);
+    switch (state) {
+        case FBSessionStateClosed:
+            return @"FBSessionStateClosed";
+        case FBSessionStateClosedLoginFailed:
+            return @"FBSessionStateClosedLoginFailed";
+        case FBSessionStateCreated:
+            return @"FBSessionStateCreated";
+        case FBSessionStateCreatedOpening:
+            return @"FBSessionStateCreatedOpening";
+        case FBSessionStateCreatedTokenLoaded:
+            return @"FBSessionStateCreatedTokenLoaded";
+        case FBSessionStateOpen:
+            return @"FBSessionStateOpen";
+        case FBSessionStateOpenTokenExtended:
+            return @"FBSessionStateOpenTokenExtended";
+            
+    }
+    return @"Not Found";
+}
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error open:(BOOL)open permissions:(BOOL)permissions
+{
+    if(self.openBlock && open) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.openBlock(error);
+            self.openBlock = nil;
+        });
+    }
+    else if(self.permissionsBlock && permissions) {
+        self.permissionsBlock(error);
+        self.permissionsBlock = nil;
+    }
+    
+    switch (state) {
+        case FBSessionStateOpen:
+            break;
+        case FBSessionStateOpenTokenExtended:
+            break;
+        case FBSessionStateClosed:
+        case FBSessionStateClosedLoginFailed:
+            [FBSession.activeSession closeAndClearTokenInformation];
+            break;
+        
+        default:
+            break;
+    }
+    
+    if (error) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
 }
 
 - (void)openSessionWithBasicInfo:(void(^)(NSError *error))completionBlock
@@ -46,9 +95,11 @@
         return;
     }
     
+    self.openBlock = completionBlock;
+    
     [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(error);
+            [self sessionStateChanged:session state:status error:error open:YES permissions:NO];
         });
     }];
 }
@@ -57,18 +108,16 @@ static NSString *const publish_actions = @"publish_actions";
 
 - (void)requestPublishPermissions:(void(^)(NSError *error))completionBlock
 {
-    if(isLoggingOut) {
-        return;
-    }
-    
     if([[[FBSession activeSession] permissions] indexOfObject:publish_actions] != NSNotFound) {
         completionBlock(nil);
         return;
     }
     
+    self.permissionsBlock = completionBlock;
+    
     [FBSession.activeSession requestNewPublishPermissions:@[publish_actions] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(error);
+            [self sessionStateChanged:session state:session.state error:error open:NO permissions:YES];
         });
     }];
 }
@@ -126,13 +175,7 @@ static NSString *const publish_actions = @"publish_actions";
 
 - (void)logout
 {
-    // there is a weird bug where calling closeAndClearTokenInformation causes previous completionBlocks to be called
-    // such as in requestPublishPermissions, so we set a flag and query it in those methods to know when to skip call
-    isLoggingOut = YES;
     [FBSession.activeSession closeAndClearTokenInformation];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        isLoggingOut = NO;
-    });
 }
 
 #pragma mark - Other
