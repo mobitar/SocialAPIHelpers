@@ -83,9 +83,9 @@ NSString *NSStringFromFBSessionState(FBSessionState state)
             break;
     }
     
-    if (error) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    }
+//    if (error) {
+//        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+//    }
 }
 
 - (void)openSessionWithBasicInfo:(void(^)(NSError *error))completionBlock
