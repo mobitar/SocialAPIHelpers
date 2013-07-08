@@ -56,36 +56,22 @@ NSString *NSStringFromFBSessionState(FBSessionState state)
     return @"Not Found";
 }
 
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error open:(BOOL)open permissions:(BOOL)permissions
+- (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock
 {
-    if(self.openBlock && open) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.openBlock(error);
-            self.openBlock = nil;
-        });
-    }
-    else if(self.permissionsBlock && permissions) {
-        self.permissionsBlock(error);
-        self.permissionsBlock = nil;
-    }
-    
-    switch (state) {
-        case FBSessionStateOpen:
-            break;
-        case FBSessionStateOpenTokenExtended:
-            break;
-        case FBSessionStateClosed:
-        case FBSessionStateClosedLoginFailed:
-            [FBSession.activeSession closeAndClearTokenInformation];
-            break;
+    @weakify(self);
+    [self openSessionWithBasicInfo:^(NSError *error) {
+        @strongify(self);
+        if(error) {
+            completionBlock(error);
+            return;
+        }
         
-        default:
-            break;
-    }
-    
-//    if (error) {
-//        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-//    }
+        [self requestPublishPermissions:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }];
+    }];
 }
 
 - (void)openSessionWithBasicInfo:(void(^)(NSError *error))completionBlock
@@ -113,6 +99,12 @@ static NSString *const publish_actions = @"publish_actions";
         return;
     }
     
+    if([[FBSession activeSession] isOpen] == NO) {
+        // error
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Attempting to request publish permissions on unopened session." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        return;
+    }
+    
     self.permissionsBlock = completionBlock;
     
     [FBSession.activeSession requestNewPublishPermissions:@[publish_actions] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
@@ -122,22 +114,20 @@ static NSString *const publish_actions = @"publish_actions";
     }];
 }
 
-- (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error open:(BOOL)open permissions:(BOOL)permissions
 {
-    @weakify(self);
-    [self openSessionWithBasicInfo:^(NSError *error) {
-        @strongify(self);
-        if(error) {
-            completionBlock(error);
-            return;
-        }
-        
-        [self requestPublishPermissions:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(error);
-            });
-        }];
-    }];
+    if(self.openBlock && open) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.openBlock(error);
+            self.openBlock = nil;
+        });
+    }
+    else if(self.permissionsBlock && permissions) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.permissionsBlock(error);
+            self.permissionsBlock = nil;
+        });
+    }
 }
 
 - (void)openSessionWithBasicInfoThenRequestPublishPermissionsAndGetAudienceType:(void(^)(NSError *error, FacebookAudienceType))completionBlock
