@@ -107,7 +107,7 @@ static NSString *const publish_actions = @"publish_actions";
     
     self.permissionsBlock = completionBlock;
     
-    [FBSession.activeSession requestNewPublishPermissions:@[publish_actions] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
+    [FBSession.activeSession requestNewPublishPermissions:@[publish_actions, @"email"] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self sessionStateChanged:session state:session.state error:error open:NO permissions:YES];
         });
