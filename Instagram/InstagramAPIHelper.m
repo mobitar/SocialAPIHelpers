@@ -49,7 +49,7 @@
 -(void)igDidNotLogin:(BOOL)cancelled
 {
     if(self.errorBlock)
-            self.errorBlock(nil);
+        self.errorBlock(nil);
 
     [self clearBlocks];
 }
