@@ -34,6 +34,11 @@
    return [FBSession.activeSession handleOpenURL:url];
 }
 
+- (void)handleDidBecomeActive
+{
+    [FBSession.activeSession handleDidBecomeActive];
+}
+
 NSString *NSStringFromFBSessionState(FBSessionState state)
 {
     switch (state) {

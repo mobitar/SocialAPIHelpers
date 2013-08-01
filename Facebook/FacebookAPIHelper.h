@@ -26,5 +26,6 @@ BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type);
 
 - (NSString*)accessToken;
 - (BOOL)handleOpenUrl:(NSURL*)url;
+- (void)handleDidBecomeActive;
 - (void)logout;
 @end
