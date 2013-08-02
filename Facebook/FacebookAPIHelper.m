@@ -63,9 +63,9 @@ NSString *NSStringFromFBSessionState(FBSessionState state)
 
 - (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock
 {
-    @weakify(self);
+    __weak id weakSelf = self;
     [self openSessionWithBasicInfo:^(NSError *error) {
-        @strongify(self);
+        __strong id self = weakSelf;
         if(error) {
             completionBlock(error);
             return;
