@@ -1,6 +1,5 @@
 
 #import "FacebookAPIHelper.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import <FacebookSDK/FBGraphObject.h>
 #import "SocialNetworksKeys.h"
 
@@ -11,6 +10,8 @@
 @end
 
 @implementation FacebookAPIHelper
+
+#pragma mark - Init
 
 + (instancetype)sharedInstance
 {
@@ -23,77 +24,8 @@
     return instance;
 }
 
-- (void)setSettings
-{
-    [FBSettings setDefaultAppID:FacebookAppId()];
-    [FBSettings setDefaultDisplayName:FacebookDisplayName()];
-}
 
-- (BOOL)handleOpenUrl:(NSURL*)url
-{
-   return [FBSession.activeSession handleOpenURL:url];
-}
-
-- (void)handleDidBecomeActive
-{
-    [FBSession.activeSession handleDidBecomeActive];
-}
-
-NSString *NSStringFromFBSessionState(FBSessionState state)
-{
-    switch (state) {
-        case FBSessionStateClosed:
-            return @"FBSessionStateClosed";
-        case FBSessionStateClosedLoginFailed:
-            return @"FBSessionStateClosedLoginFailed";
-        case FBSessionStateCreated:
-            return @"FBSessionStateCreated";
-        case FBSessionStateCreatedOpening:
-            return @"FBSessionStateCreatedOpening";
-        case FBSessionStateCreatedTokenLoaded:
-            return @"FBSessionStateCreatedTokenLoaded";
-        case FBSessionStateOpen:
-            return @"FBSessionStateOpen";
-        case FBSessionStateOpenTokenExtended:
-            return @"FBSessionStateOpenTokenExtended";
-            
-    }
-    return @"Not Found";
-}
-
-- (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock
-{
-    __weak id weakSelf = self;
-    [self openSessionWithBasicInfo:^(NSError *error) {
-        __strong id self = weakSelf;
-        if(error) {
-            completionBlock(error);
-            return;
-        }
-        
-        [self requestPublishPermissions:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(error);
-            });
-        }];
-    }];
-}
-
-- (void)openSessionWithBasicInfo:(void(^)(NSError *error))completionBlock
-{
-    if([[FBSession activeSession] isOpen]) {
-        completionBlock(nil);
-        return;
-    }
-    
-    self.openBlock = completionBlock;
-    
-    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sessionStateChanged:session state:status error:error open:YES permissions:NO];
-        });
-    }];
-}
+#pragma mark - Public API
 
 static NSString *const publish_actions = @"publish_actions";
 
@@ -119,77 +51,6 @@ static NSString *const publish_actions = @"publish_actions";
     }];
 }
 
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error open:(BOOL)open permissions:(BOOL)permissions
-{
-    if(self.openBlock && open) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.openBlock(error);
-            self.openBlock = nil;
-        });
-    }
-    else if(self.permissionsBlock && permissions) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.permissionsBlock(error);
-            self.permissionsBlock = nil;
-        });
-    }
-}
-
-- (void)openSessionWithBasicInfoThenRequestPublishPermissionsAndGetAudienceType:(void(^)(NSError *error, FacebookAudienceType))completionBlock
-{
-    [self openSessionWithBasicInfoThenRequestPublishPermissions:^(NSError *error) {
-        if(error) {
-            completionBlock(error, 0);
-            return;
-        }
-        
-        [self getAppAudienceType:^(FacebookAudienceType audienceType, NSError *error) {
-            if(error) {
-                completionBlock(error, 0);
-                return;
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(nil, audienceType);
-            });
-        }];
-    }];
-}
-
-- (void)getUserInfo:(void(^)(id<FBGraphUser> user, NSError *error))completionBlock
-{
-    [[FBRequest requestForMe] startWithCompletionHandler:
-     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
-         completionBlock(user, error);
-     }];
-}
-
-- (NSString*)accessToken
-{
-    return [[[FBSession activeSession] accessTokenData] accessToken];
-}
-
-- (void)logout
-{
-    [FBSession.activeSession closeAndClearTokenInformation];
-}
-
-#pragma mark - Other
-
-FacebookAudienceType AudienceTypeForValue(NSString *value)
-{
-    if([value isEqualToString:@"ALL_FRIENDS"])        return FacebookAudienceTypeFriends;
-    if([value isEqualToString:@"SELF"])               return FacebookAudienceTypeSelf;
-    if([value isEqualToString:@"EVERYONE"])           return FacebookAudienceTypeEveryone;
-    if([value isEqualToString:@"FRIENDS_OF_FRIENDS"]) return FacebookAudienceTypeFriends;
-    if([value isEqualToString:@"NO_FRIENDS"])         return FacebookAudienceTypeSelf;
-    return FacebookAudienceTypeSelf;
-}
-
-BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type)
-{
-    return type == FacebookAudienceTypeSelf;
-}
-
 - (void)getAppAudienceType:(void(^)(FacebookAudienceType audienceType, NSError *error))completionBlock
 {
     if(![[[FBSession activeSession] accessTokenData] accessToken]) {
@@ -211,5 +72,113 @@ BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type)
         completionBlock(AudienceTypeForValue(type), nil);
     }];
 }
+
+- (void)openSessionWithReadPermissions:(NSArray *)readPermissions completionBlock:(void(^)(NSError *error))completionBlock
+{
+    if([[FBSession activeSession] isOpen]) {
+        completionBlock(nil);
+        return;
+    }
+    
+    self.openBlock = completionBlock;
+    
+    [FBSession openActiveSessionWithReadPermissions:readPermissions allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self sessionStateChanged:session state:status error:error open:YES permissions:NO];
+        });
+    }];
+}
+
+- (void)getUserInfo:(void(^)(id<FBGraphUser> user, NSError *error))completionBlock
+{
+    [[FBRequest requestForMe] startWithCompletionHandler:
+     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+         completionBlock(user, error);
+     }];
+}
+
+- (BOOL)handleOpenUrl:(NSURL*)url
+{
+   return [FBSession.activeSession handleOpenURL:url];
+}
+
+- (void)handleDidBecomeActive
+{
+    [FBSession.activeSession handleDidBecomeActive];
+}
+
+- (void)logout
+{
+    [FBSession.activeSession closeAndClearTokenInformation];
+}
+
+- (NSString*)accessToken
+{
+    return [[[FBSession activeSession] accessTokenData] accessToken];
+}
+
+
+#pragma mark - Private API
+
+- (void)setSettings
+{
+    [FBSettings setDefaultAppID:FacebookAppId()];
+    [FBSettings setDefaultDisplayName:FacebookDisplayName()];
+}
+
+NSString *NSStringFromFBSessionState(FBSessionState state)
+{
+    switch (state) {
+        case FBSessionStateClosed:
+            return @"FBSessionStateClosed";
+        case FBSessionStateClosedLoginFailed:
+            return @"FBSessionStateClosedLoginFailed";
+        case FBSessionStateCreated:
+            return @"FBSessionStateCreated";
+        case FBSessionStateCreatedOpening:
+            return @"FBSessionStateCreatedOpening";
+        case FBSessionStateCreatedTokenLoaded:
+            return @"FBSessionStateCreatedTokenLoaded";
+        case FBSessionStateOpen:
+            return @"FBSessionStateOpen";
+        case FBSessionStateOpenTokenExtended:
+            return @"FBSessionStateOpenTokenExtended";
+            
+    }
+    return @"Not Found";
+}
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error open:(BOOL)open permissions:(BOOL)permissions
+{
+    if(self.openBlock && open) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.openBlock(error);
+            self.openBlock = nil;
+        });
+    }
+    else if(self.permissionsBlock && permissions) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.permissionsBlock(error);
+            self.permissionsBlock = nil;
+        });
+    }
+}
+
+FacebookAudienceType AudienceTypeForValue(NSString *value)
+{
+    if([value isEqualToString:@"ALL_FRIENDS"])        return FacebookAudienceTypeFriends;
+    if([value isEqualToString:@"SELF"])               return FacebookAudienceTypeSelf;
+    if([value isEqualToString:@"EVERYONE"])           return FacebookAudienceTypeEveryone;
+    if([value isEqualToString:@"FRIENDS_OF_FRIENDS"]) return FacebookAudienceTypeFriends;
+    if([value isEqualToString:@"NO_FRIENDS"])         return FacebookAudienceTypeSelf;
+    return FacebookAudienceTypeSelf;
+}
+
+BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type)
+{
+    return type == FacebookAudienceTypeSelf;
+}
+
+
 
 @end
