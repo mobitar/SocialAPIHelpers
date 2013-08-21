@@ -2,9 +2,6 @@
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FBGraphObject.h>
 #import <FacebookSDK/FBGraphUser.h>
-#import "SocialAPIHelper.h"
-
-@protocol FBGraphUser;
 
 typedef NS_ENUM(NSInteger, FacebookAudienceType)
 {
@@ -19,7 +16,6 @@ BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type);
 
 + (instancetype)sharedInstance;
 
-- (void)getAppAudienceType:(void(^)(FacebookAudienceType audienceType, NSError *error))completionBlock;
 - (void)openSessionWithBasicInfo:(void(^)( NSError *error))completionBlock;
 - (void)requestPublishPermissions:(void(^)( NSError *error))completionBlock;
 - (void)getUserInfo:(void(^)(id<FBGraphUser> user, NSError *error))completionBlock;
@@ -27,6 +23,7 @@ BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type);
 - (void)openSessionWithBasicInfoThenRequestPublishPermissionsAndGetAudienceType:(void(^)(NSError *error, FacebookAudienceType))completionBlock;
 
 - (void)getFriends:(void(^)(NSArray *friends, NSError *error))completionBlock;
+- (void)getAppAudienceType:(void(^)(FacebookAudienceType audienceType, NSError *error))completionBlock;
 - (void)showAppRequestDialogueWithMessage:(NSString*)message toUserId:(NSString*)userId;
 
 - (NSString*)accessToken;
