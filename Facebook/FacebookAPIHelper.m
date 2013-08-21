@@ -1,8 +1,9 @@
 
 #import "FacebookAPIHelper.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import <FacebookSDK/FBGraphObject.h>
 #import "SocialNetworksKeys.h"
+#import <FacebookSDK/FBDialogs.h>
+#import <FacebookSDK/FBWebDialogs.h>
 
 @interface FacebookAPIHelper ()
 // single use blocks. these blocks are immediatly nulled after they are used
@@ -161,6 +162,30 @@ static NSString *const publish_actions = @"publish_actions";
      ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
          completionBlock(user, error);
      }];
+}
+
+- (void)getFriends:(void(^)(NSArray *friends, NSError *error))completionBlock
+{
+    FBRequest* friendsRequest = [FBRequest requestForMyFriends];
+    friendsRequest.session = [FBSession activeSession];
+    [friendsRequest startWithCompletionHandler: ^(FBRequestConnection *connection, NSDictionary* result, NSError *error) {
+        if(error) {
+            completionBlock(nil, error);
+            return;
+        }
+        
+        NSArray* friends = result[@"data"];
+        completionBlock(friends, nil);
+    }];
+}
+
+- (void)showAppRequestDialogueWithMessage:(NSString*)message toUserId:(NSString*)userId
+{
+    [FBWebDialogs presentDialogModallyWithSession:[FBSession activeSession] dialog:@"apprequests"
+      parameters:@{@"to" : userId, @"message" : message}
+      handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+        
+    }];
 }
 
 - (NSString*)accessToken

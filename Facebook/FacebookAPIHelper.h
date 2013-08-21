@@ -1,5 +1,7 @@
 
 #import <Foundation/Foundation.h>
+#import <FacebookSDK/FBGraphObject.h>
+#import <FacebookSDK/FBGraphUser.h>
 #import "SocialAPIHelper.h"
 
 @protocol FBGraphUser;
@@ -23,6 +25,9 @@ BOOL FacebookAudienceTypeIsRestricted(FacebookAudienceType type);
 - (void)getUserInfo:(void(^)(id<FBGraphUser> user, NSError *error))completionBlock;
 - (void)openSessionWithBasicInfoThenRequestPublishPermissions:(void(^)(NSError *error))completionBlock;
 - (void)openSessionWithBasicInfoThenRequestPublishPermissionsAndGetAudienceType:(void(^)(NSError *error, FacebookAudienceType))completionBlock;
+
+- (void)getFriends:(void(^)(NSArray *friends, NSError *error))completionBlock;
+- (void)showAppRequestDialogueWithMessage:(NSString*)message toUserId:(NSString*)userId;
 
 - (NSString*)accessToken;
 - (BOOL)handleOpenUrl:(NSURL*)url;
