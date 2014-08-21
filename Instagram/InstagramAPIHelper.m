@@ -72,13 +72,13 @@
 
 - (void)followUserId:(NSString*)userId withAccessToken:(NSString*)accessToken
 {
-    NSString *path = [NSString stringWithFormat:@"https://api.instagram.com/v1/users/%@/relationship?access_token=%@", userId, accessToken];
-    NSDictionary *parameters = @{@"action" : @"follow"};
-    [[AppDelegate serverClient] postPath:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(operation.responseString);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(error.description);
-    }];
+//    NSString *path = [NSString stringWithFormat:@"https://api.instagram.com/v1/users/%@/relationship?access_token=%@", userId, accessToken];
+//    NSDictionary *parameters = @{@"action" : @"follow"};
+//    [[AppDelegate serverClient] postPath:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+////        NSLog(operation.responseString);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+////        NSLog(error.description);
+//    }];
 }
 
 @end
