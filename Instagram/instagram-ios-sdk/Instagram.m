@@ -45,13 +45,12 @@ static void *finishedContext            = @"finishedContext";
 }
 
 - (void)dealloc {
-    for (IGRequest* request in _requests) {
-        @try {
-            [_requests removeObserver:self forKeyPath:requestFinishedKeyPath];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@", exception);
-        }
+
+    @try {
+        [_requests removeObserver:self forKeyPath:requestFinishedKeyPath];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
     }
 }
 
